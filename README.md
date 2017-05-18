@@ -1,4 +1,4 @@
-centos-ssh
+centos-ssh-locale
 ==========
 
 Docker Images of CentOS-6 6.8 x86_64 / CentOS-7 7.3.1611 x86_64
@@ -7,12 +7,12 @@ Includes public key authentication, Automated password generation and supports c
 
 ## Overview & links
 
-The latest CentOS-6 / CentOS-7 based releases can be pulled from the `centos-6` / `centos-7` Docker tags respectively. For production use it is recommended to select a specific release tag - the convention is `centos-6-1.7.6` OR `1.7.6` for the [1.7.6](https://github.com/jdeathe/centos-ssh/tree/1.7.6) release tag and `centos-7-2.2.1` OR `2.2.1` for the [2.2.1](https://github.com/jdeathe/centos-ssh/tree/2.2.1) release tag.
+The latest CentOS-6 / CentOS-7 based releases can be pulled from the `centos-6` / `centos-7` Docker tags respectively. For production use it is recommended to select a specific release tag - the convention is `centos-6-1.7.6` OR `1.7.6` for the [1.7.6](https://github.com/petems/centos-ssh-locale/tree/1.7.6) release tag and `centos-7-2.2.1` OR `2.2.1` for the [2.2.1](https://github.com/petems/centos-ssh-locale/tree/2.2.1) release tag.
 
 ### Tags and respective `Dockerfile` links
 
-- `centos-7`,`centos-7-2.2.1`,`2.2.1` [(centos-7/Dockerfile)](https://github.com/jdeathe/centos-ssh/blob/centos-7/Dockerfile)
-- `centos-6`,`centos-6-1.7.6`,`1.7.6` [(centos-6/Dockerfile)](https://github.com/jdeathe/centos-ssh/blob/centos-6/Dockerfile)
+- `centos-7`,`centos-7-2.2.1`,`2.2.1` [(centos-7/Dockerfile)](https://github.com/petems/centos-ssh-locale/blob/centos-7/Dockerfile)
+- `centos-6`,`centos-6-1.7.6`,`1.7.6` [(centos-6/Dockerfile)](https://github.com/petems/centos-ssh-locale/blob/centos-6/Dockerfile)
 
 The Dockerfile can be used to build a base image that is the bases for several other docker images.
 
@@ -30,19 +30,19 @@ SSH is not required in order to access a terminal for the running container. The
 $ docker exec -it {container-name-or-id} bash
 ```
 
-For cases where access to docker exec is not possible the preferred method is to use Command Keys and the nsenter command. See [command-keys.md](https://github.com/jdeathe/centos-ssh/blob/centos-7/command-keys.md) for details on how to set this up.
+For cases where access to docker exec is not possible the preferred method is to use Command Keys and the nsenter command. See [command-keys.md](https://github.com/petems/centos-ssh-locale/blob/centos-7/command-keys.md) for details on how to set this up.
 
 ## Quick Example
 
 ### SSH Mode
 
-Run up an SSH container named 'ssh.pool-1.1.1' from the docker image 'jdeathe/centos-ssh' on port 2020 of your docker host.
+Run up an SSH container named 'ssh.pool-1.1.1' from the docker image 'petems/centos-ssh-locale' on port 2020 of your docker host.
 
 ```
 $ docker run -d \
   --name ssh.pool-1.1.1 \
   -p 2020:22 \
-  jdeathe/centos-ssh:centos-7
+  petems/centos-ssh-locale:centos-7
 ```
 
 Check the logs for the password (required for sudo).
@@ -69,14 +69,14 @@ $ ssh -p 2020 -i id_rsa_insecure \
 
 ### SFTP Mode
 
-Run up an SFTP container named 'sftp.pool-1.1.1' from the docker image 'jdeathe/centos-ssh' on port 2021 of your docker host.
+Run up an SFTP container named 'sftp.pool-1.1.1' from the docker image 'petems/centos-ssh-locale' on port 2021 of your docker host.
 
 ```
 $ docker run -d \
   --name sftp.pool-1.1.1 \
   -p 2021:22 \
   -e SSH_USER_FORCE_SFTP=true \
-  jdeathe/centos-ssh:centos-7
+  petems/centos-ssh-locale:centos-7
 ```
 
 Connect using the `sftp` command line client with the [insecure private key](https://github.com/mitchellh/vagrant/blob/master/keys/vagrant).
@@ -92,7 +92,7 @@ $ sftp -i id_rsa_insecure \
 
 ### Running
 
-To run the a docker container from this image you can use the standard docker commands. Alternatively, you can use the embedded (Service Container Manager Interface) [scmi](https://github.com/jdeathe/centos-ssh/blob/centos-7/usr/sbin/scmi) that is included in the image since `1.7.2` / `2.1.2` or, if you have a checkout of the [source repository](https://github.com/jdeathe/centos-ssh), and have make installed the Makefile provides targets to build, install, start, stop etc. where environment variables can be used to configure the container options and set custom docker run parameters.
+To run the a docker container from this image you can use the standard docker commands. Alternatively, you can use the embedded (Service Container Manager Interface) [scmi](https://github.com/petems/centos-ssh-locale/blob/centos-7/usr/sbin/scmi) that is included in the image since `1.7.2` / `2.1.2` or, if you have a checkout of the [source repository](https://github.com/petems/centos-ssh-locale), and have make installed the Makefile provides targets to build, install, start, stop etc. where environment variables can be used to configure the container options and set custom docker run parameters.
 
 #### SCMI Installation Examples
 
@@ -105,7 +105,7 @@ $ docker run \
   --rm \
   --privileged \
   --volume /:/media/root \
-  jdeathe/centos-ssh:2.2.1 \
+  petems/centos-ssh-locale:2.2.1 \
   /usr/sbin/scmi install \
     --chroot=/media/root \
     --tag=2.2.1 \
@@ -122,7 +122,7 @@ $ docker run \
   --rm \
   --privileged \
   --volume /:/media/root \
-  jdeathe/centos-ssh:2.2.1 \
+  petems/centos-ssh-locale:2.2.1 \
   /usr/sbin/scmi uninstall \
     --chroot=/media/root \
     --tag=2.2.1 \
@@ -139,7 +139,7 @@ $ docker run \
   --rm \
   --privileged \
   --volume /:/media/root \
-  jdeathe/centos-ssh:2.2.1 \
+  petems/centos-ssh-locale:2.2.1 \
   /usr/sbin/scmi install \
     --chroot=/media/root \
     --tag=2.2.1 \
@@ -162,7 +162,7 @@ Since release tags `1.7.2` / `2.1.2` the install template has been added to the 
 _NOTE:_ A prerequisite of the following examples is that the image has been pulled (or loaded from the release package).
 
 ```
-$ docker pull jdeathe/centos-ssh:2.2.1
+$ docker pull petems/centos-ssh-locale:2.2.1
 ```
 
 To see detailed information about the image run `scmi` with the `--info` option. To see all available `scmi` options run with the `--help` option.
@@ -171,7 +171,7 @@ To see detailed information about the image run `scmi` with the `--info` option.
 $ eval "sudo -E $(
     docker inspect \
     -f "{{.ContainerConfig.Labels.install}}" \
-    jdeathe/centos-ssh:2.2.1
+    petems/centos-ssh-locale:2.2.1
   ) --info"
 ```
 
@@ -181,7 +181,7 @@ To perform an installation using the docker name `ssh.pool-1.2.1` simply use the
 $ eval "sudo -E $(
     docker inspect \
     -f "{{.ContainerConfig.Labels.install}}" \
-    jdeathe/centos-ssh:2.2.1
+    petems/centos-ssh-locale:2.2.1
   ) --name=ssh.pool-1.2.1"
 ```
 
@@ -191,7 +191,7 @@ To uninstall use the *same command* that was used to install but with the `unins
 $ eval "sudo -E $(
     docker inspect \
     -f "{{.ContainerConfig.Labels.uninstall}}" \
-    jdeathe/centos-ssh:2.2.1
+    petems/centos-ssh-locale:2.2.1
   ) --name=ssh.pool-1.2.1"
 ```
 
@@ -204,7 +204,7 @@ To see detailed information about the image run `scmi` with the `--info` option.
 ```
 $ sudo -E atomic install \
   -n ssh.pool-1.3.1 \
-  jdeathe/centos-ssh:2.2.1 \
+  petems/centos-ssh-locale:2.2.1 \
   --info
 ```
 
@@ -213,14 +213,14 @@ To perform an installation using the docker name `ssh.pool-1.3.1` simply use the
 ```
 $ sudo -E atomic install \
   -n ssh.pool-1.3.1 \
-  jdeathe/centos-ssh:2.2.1
+  petems/centos-ssh-locale:2.2.1
 ```
 
 Alternatively, you could use the `scmi` options `--name` or `-n` for naming the container.
 
 ```
 $ sudo -E atomic install \
-  jdeathe/centos-ssh:2.2.1 \
+  petems/centos-ssh-locale:2.2.1 \
   --name ssh.pool-1.3.1
 ```
 
@@ -229,7 +229,7 @@ To uninstall use the *same command* that was used to install but with the `unins
 ```
 $ sudo -E atomic uninstall \
   -n ssh.pool-1.3.1 \
-  jdeathe/centos-ssh:2.2.1
+  petems/centos-ssh-locale:2.2.1
 ```
 
 #### Using environment variables
@@ -245,7 +245,7 @@ $ docker stop ssh.pool-1.1.1 \
   --name ssh.pool-1.1.1 \
   -p :22 \
   --env "SSH_USER=app-user" \
-  jdeathe/centos-ssh:centos-7
+  petems/centos-ssh-locale:centos-7
 ```
 
 Now you can find out the app-admin, (sudoer), user's password by inspecting the container's logs
@@ -415,7 +415,7 @@ If setting a password for the SSH user you might not want to store the plain tex
 To generate a hashed password string for the password `Passw0rd!`, use the following method.
 
 ```
-$ docker run --rm jdeathe/centos-ssh \
+$ docker run --rm petems/centos-ssh-locale \
   env PASSWORD=Passw0rd! \
   python -c "import crypt,os; print crypt.crypt(os.environ.get('PASSWORD'))"
 ```

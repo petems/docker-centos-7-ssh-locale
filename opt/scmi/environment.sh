@@ -1,8 +1,8 @@
 # -----------------------------------------------------------------------------
 # Constants
 # -----------------------------------------------------------------------------
-DOCKER_USER=jdeathe
-DOCKER_IMAGE_NAME=centos-ssh
+DOCKER_USER=petems
+DOCKER_IMAGE_NAME=centos-ssh-locale
 
 # Tag validation patterns
 DOCKER_IMAGE_TAG_PATTERN='^(latest|centos-[6-7]|((1|2|centos-(6-1|7-2))\.[0-9]+\.[0-9]+))$'

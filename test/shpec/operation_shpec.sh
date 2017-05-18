@@ -8,7 +8,7 @@ readonly PUBLIC_KEY_ID_RSA_TEST_2="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD/sMi/
 readonly PUBLIC_KEY_ID_RSA_TEST_2_SIGNATURE="b3:2e:5d:8c:76:d3:c7:24:13:a3:4f:6f:4d:a2:31:9c"
 readonly PUBLIC_KEY_ID_RSA_TEST_COMBINED_BASE64="c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFESHpkK21ZWFNHTFFTWndVSld3WUtPQkk2STdtaEhoM093MERiVFF2UVVIaGtEY1FWcnFqcEJLWnE4U3NuRUs0RXh5SmVSUTVUdFQ1VnFvbGZWRzZMbGFUM3l4WG1KeHg3NVk4b3lwRkFLejdvQ09RQ0p1Z3F1YkFreDJZcFQ2S083ZDZVT1BxT3VMcG1GaTN0K1J5ZjQ5VGJObGpTZXMxc2JTQ3hVRGxUZWt4RytJdCsvZVpVcVhXdWRvcm5ZSkNmbU1lMVVBWXRSd01LaXlEV3FVMUxOMUtiMnpWUjc2WXBqTXhLOUlpRUpqaHBaUy9SNzB6eEdFaWpGckwrUnY0Qng4eS9VakFWVnRUa3ZwYUVhang3cE1uZDBmc2ZuVXdoWUxvVkhnRzVaZEhBWVNSeThqLzArbXBlVkVzVFFaSkFuZWdVYlZOdUJFYzN4MmIxeGdrUzMgdGVzdF9rZXlfMQpzc2gtcnNhIEFBQUFCM056YUMxeWMyRUFBQUFEQVFBQkFBQUJBUUREL3NNaS9Ka3JZdFhWaTYrcFl1d3ZzVXhMRFhvd3Azb2t2SzIrMnFxblBBNm5XR0J1L0xTU1FablltSFpZeWhjYlJLcmRzY25zYk0wamZtVTBjS2YvbEdpUlJLMVlmVWVwb210UldWQnh6QTNtdkJ1K3FtYnVVL1BESGZKSnhCMTlISHVjNmE4L05QT1pJTk5NR0laZzkxVzc5YlcwZ1hJRWgzK1BpTlZ2dWVsT2RGSmR2S1NXdEVsSmxNay9sbDdkUzF2cHdKOWlaOEVQYmFsU3pFWjMwU3pxRzhYZzRWTWhPbjl5Ym52Y05XR0pWQ2c0eXVnaG1kVkEzMkgyK3JqNnFpczRBSmRRWVVOb2g5a0JLL1hVb2dnUlY3TEVhZWV5ak1XUG42R3hNNHlNN0lZa3N0cGlsYktpUElRanc5RURUTjRGZElKL0xjZXNjZndEVDdLWiB0ZXN0X2tleV8yCg=="
 
-# This should ideally be a static value but hosts might be using this port so 
+# This should ideally be a static value but hosts might be using this port so
 # need to allow for an alternative.
 DOCKER_PORT_MAP_TCP_22="${DOCKER_PORT_MAP_TCP_22:-2020}"
 
@@ -46,7 +46,7 @@ if [[ ! -d ${TEST_DIRECTORY} ]]; then
 	exit 1
 fi
 
-describe "jdeathe/centos-ssh:latest"
+describe "petems/centos-ssh-locale:latest"
 	test_setup
 
 	describe "Basic SSH operations"
@@ -61,7 +61,7 @@ describe "jdeathe/centos-ssh:latest"
 			docker run -d \
 				--name ssh.pool-1.1.1 \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -145,7 +145,7 @@ describe "jdeathe/centos-ssh:latest"
 		trap - \
 			INT TERM EXIT
 	end
-	
+
 	describe "Basic SFTP operations"
 		trap "docker_terminate_container sftp.pool-1.1.1 &> /dev/null; exit 1" \
 			INT TERM EXIT
@@ -159,7 +159,7 @@ describe "jdeathe/centos-ssh:latest"
 				--name sftp.pool-1.1.1 \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
 				--env SSH_USER_FORCE_SFTP=true \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -251,7 +251,7 @@ describe "jdeathe/centos-ssh:latest"
 				--name ssh.pool-1.1.1 \
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -300,7 +300,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--env "SSH_USER=centos" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -347,7 +347,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--env "SSH_AUTHORIZED_KEYS=${PUBLIC_KEY_ID_RSA_TEST_1}" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -394,7 +394,7 @@ describe "jdeathe/centos-ssh:latest"
 					--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 					--env "SSH_AUTHORIZED_KEYS=${PUBLIC_KEY_ID_RSA_TEST_COMBINED_BASE64}" \
 					--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-					jdeathe/centos-ssh:latest &> /dev/null
+					petems/centos-ssh-locale:latest &> /dev/null
 
 				container_port_22="$(
 					docker port \
@@ -465,7 +465,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_USER=app-1" \
 				--env "SSH_USER_HOME=/var/www/%u" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -513,7 +513,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--env "SSH_USER_ID=1000:502" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -562,7 +562,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--env "SSH_USER_SHELL=/bin/sh" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -612,7 +612,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env "SSH_SUDO=ALL=(ALL) NOPASSWD:ALL" \
 				--env "SSH_INHERIT_ENVIRONMENT=true" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -648,7 +648,7 @@ describe "jdeathe/centos-ssh:latest"
 				--name ssh.pool-1.1.1 \
 				--env "SSH_USER_PASSWORD=Insecure_Passw0rd£" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -685,7 +685,7 @@ describe "jdeathe/centos-ssh:latest"
 				# 	docker exec ssh.pool-1.1.1 env \
 				# 	| grep '^SSH_USER_PASSWORD='
 				# )"
-				# 
+				#
 				# assert equal \
 				# 	"${user_password/SSH_USER_PASSWORD=/}" \
 				# 	"${REDACTED_VALUE}"
@@ -714,7 +714,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env 'SSH_USER_PASSWORD=$6$pepper$g5/OhofGtHVo3wqRgVHFQrJDyK0mV9bDpF5HP964wuIkQ7MXuYq1KRTmShaUmTQW3ZRsjw2MjC1LNPh5HMcrY0' \
 				--env "SSH_USER_PASSWORD_HASHED=true" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			container_port_22="$(
 				docker port \
@@ -751,7 +751,7 @@ describe "jdeathe/centos-ssh:latest"
 			# 		docker exec ssh.pool-1.1.1 env \
 			# 		| grep '^SSH_USER_PASSWORD='
 			# 	)"
-			# 
+			#
 			# 	assert equal \
 			# 		"${user_password/SSH_USER_PASSWORD=/}" \
 			# 		"${REDACTED_VALUE}"
@@ -779,7 +779,7 @@ describe "jdeathe/centos-ssh:latest"
 				--name ssh.pool-1.1.1 \
 				--env "SSH_AUTOSTART_SSHD_BOOTSTRAP=false" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			sleep ${BOOTSTRAP_BACKOFF_TIME}
 
@@ -801,7 +801,7 @@ describe "jdeathe/centos-ssh:latest"
 				--name ssh.pool-1.1.1 \
 				--env "SSH_AUTOSTART_SSHD=false" \
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
-				jdeathe/centos-ssh:latest &> /dev/null
+				petems/centos-ssh-locale:latest &> /dev/null
 
 			sleep ${BOOTSTRAP_BACKOFF_TIME}
 
@@ -833,7 +833,7 @@ describe "jdeathe/centos-ssh:latest"
 				--publish ${DOCKER_PORT_MAP_TCP_22}:22 \
 				--env SSH_CHROOT_DIRECTORY="/chroot/%u" \
 				--env SSH_USER_FORCE_SFTP=true \
-				jdeathe/centos-ssh:latest \
+				petems/centos-ssh-locale:latest \
 				&> /dev/null
 
 			container_port_22="$(
@@ -884,7 +884,7 @@ describe "jdeathe/centos-ssh:latest"
 				)"
 
 				assert equal "${user_shell}" "/sbin/nologin"
-			
+
 				it "Displays the user's shell in the logs output summary."
 					local user_shell=""
 
@@ -926,7 +926,7 @@ describe "jdeathe/centos-ssh:latest"
 			docker run -d \
 				--name www-data.pool-1.1.1 \
 				--volume www-data.pool-1.1.1:/var/www \
-				jdeathe/centos-ssh:latest \
+				petems/centos-ssh-locale:latest \
 				&> /dev/null
 
 			sleep ${BOOTSTRAP_BACKOFF_TIME}
@@ -944,7 +944,7 @@ describe "jdeathe/centos-ssh:latest"
 				--env SSH_USER_FORCE_SFTP=true \
 				--env SSH_USER_HOME="/var/www" \
 				--volumes-from www-data.pool-1.1.1 \
-				jdeathe/centos-ssh:latest \
+				petems/centos-ssh-locale:latest \
 				&> /dev/null
 
 			container_port_22="$(

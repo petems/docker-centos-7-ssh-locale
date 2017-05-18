@@ -1,8 +1,8 @@
 # -----------------------------------------------------------------------------
 # Constants
 # -----------------------------------------------------------------------------
-DOCKER_USER := jdeathe
-DOCKER_IMAGE_NAME := centos-ssh
+DOCKER_USER := petems
+DOCKER_IMAGE_NAME := centos-ssh-locale
 SHPEC_ROOT := test/shpec
 
 # Tag validation patterns
