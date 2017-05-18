@@ -1,12 +1,12 @@
 # =============================================================================
-# jdeathe/centos-ssh
+# petems/centos-ssh-locale
 #
 # CentOS-7 7.3.1611 x86_64 - SCL/EPEL/IUS Repos. / Supervisor / OpenSSH.
-# 
+#
 # =============================================================================
 FROM centos:7.3.1611
 
-MAINTAINER James Deathe <james.deathe@gmail.com>
+MAINTAINER Peter Souter <p.morsou@gmail.com>
 
 # -----------------------------------------------------------------------------
 # Base Install + Import the RPM GPG keys for Repositories
@@ -41,17 +41,12 @@ RUN rpm --rebuilddb \
 		openssh-clients \
 		python-setuptools \
 		yum-plugin-versionlock \
-	&& yum clean all \
-	&& rm -rf /etc/ld.so.cache \
-	&& rm -rf /sbin/sln \
-	&& rm -rf /usr/{{lib,share}/locale,share/{man,doc,info,cracklib,i18n},{lib,lib64}/gconv,bin/localedef,sbin/build-locale-archive} \
-	&& rm -rf /{root,tmp,var/cache/{ldconfig,yum}}/* \
-	&& > /etc/sysconfig/i18n
+	&& yum clean all
 
 # -----------------------------------------------------------------------------
 # Install supervisord (required to run more than a single process in a container)
 # Note: EPEL package lacks /usr/bin/pidproxy
-# We require supervisor-stdout to allow output of services started by 
+# We require supervisor-stdout to allow output of services started by
 # supervisord to be easily inspected with "docker logs".
 # -----------------------------------------------------------------------------
 RUN easy_install \
@@ -158,7 +153,7 @@ LABEL \
 --rm \
 --privileged \
 --volume /:/media/root \
-jdeathe/centos-ssh:${RELEASE_VERSION} \
+petems/centos-ssh-locale:${RELEASE_VERSION} \
 /usr/sbin/scmi install \
 --chroot=/media/root \
 --name=\${NAME} \
@@ -168,18 +163,18 @@ jdeathe/centos-ssh:${RELEASE_VERSION} \
 --rm \
 --privileged \
 --volume /:/media/root \
-jdeathe/centos-ssh:${RELEASE_VERSION} \
+petems/centos-ssh-locale:${RELEASE_VERSION} \
 /usr/sbin/scmi uninstall \
 --chroot=/media/root \
 --name=\${NAME} \
 --tag=${RELEASE_VERSION} \
 --setopt='--volume {{NAME}}.config-ssh:/etc/ssh'" \
-	org.deathe.name="centos-ssh" \
-	org.deathe.version="${RELEASE_VERSION}" \
-	org.deathe.release="jdeathe/centos-ssh:${RELEASE_VERSION}" \
-	org.deathe.license="MIT" \
-	org.deathe.vendor="jdeathe" \
-	org.deathe.url="https://github.com/jdeathe/centos-ssh" \
-	org.deathe.description="CentOS-7 7.3.1611 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
+	org.petems.name="centos-ssh-locale" \
+	org.petems.version="${RELEASE_VERSION}" \
+	org.petems.release="petems/centos-ssh-locale:${RELEASE_VERSION}" \
+	org.petems.license="MIT" \
+	org.petems.vendor="petems" \
+	org.petems.url="https://github.com/petems/centos-ssh-locale" \
+	org.petems.description="CentOS-7 7.3.1611 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
 
 CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]

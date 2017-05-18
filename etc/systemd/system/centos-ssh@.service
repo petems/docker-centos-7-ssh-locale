@@ -39,7 +39,7 @@
 # -----------------------------------------------------------------------------
 
 [Unit]
-Description=centos-ssh // %p@%i
+Description=centos-ssh-locale // %p@%i
 Requires=docker.service
 After=docker.service
 
@@ -47,7 +47,7 @@ After=docker.service
 Restart=on-failure
 RestartSec=30
 TimeoutStartSec=1200
-Environment="DOCKER_USER=jdeathe"
+Environment="DOCKER_USER=petems"
 Environment="DOCKER_IMAGE_NAME=centos-ssh"
 Environment="DOCKER_CONTAINER_OPTS="
 Environment="DOCKER_IMAGE_PACKAGE_PATH=/var/opt/scmi/packages"
